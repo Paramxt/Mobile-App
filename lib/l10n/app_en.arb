@@ -81,5 +81,17 @@
     "can_not_email":"Cannot enter special characters.",
     "no_noti":"No Notification",
     "machine":"Machine 1",
-    "percentage":"Percentage of Each Bottle Type"
+    "percentage":"Percentage of Each Bottle Type",
+    "forget_pass":"Forget password",
+    "email_otp":"Enter your email for receive OTP",
+    "confirm":"Confirm",
+    "error_otp":"OTP sending failed",
+    "enter_otp":"Please enter OTP",
+    "otp":"OTP",
+    "confirm_otp":"Confirm OTP",
+    "pls_otp":"Please enter your OTP",
+    "sixotp":"OTP must contain 6 digits",
+    "in_otp":"Invalid OTP code",
+    "error_pass":"Password change failed",
+    "set_pass":"Set new password"
 }   

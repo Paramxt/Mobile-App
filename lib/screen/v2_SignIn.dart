@@ -7,6 +7,7 @@ import 'package:flutter_summer/l10n/language2.dart';
 import 'package:flutter_summer/main.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_summer/router/routes.gr.dart';
+import 'package:flutter_summer/screen/reset_password.dart';
 import 'package:flutter_summer/screen/screenhome.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io' show Platform;
@@ -232,7 +233,26 @@ class _LoginPageState extends State<Login2Page> {
                             },
                           ),
                         ),
-                        const SizedBox(height: 5.0),
+                        const SizedBox(height: 2.0),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ResetPasswordPage()),
+                              );
+                            },
+                            child: Text(
+                              AppLocalizations.of(context)!
+                                  .forget_pass, // เช่น "Forgot password?"
+                              style: const TextStyle(
+                                  color: FontColor, fontSize: 15),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10.0),
                         SizedBox(
                           height: 80.0,
                           child: Stack(

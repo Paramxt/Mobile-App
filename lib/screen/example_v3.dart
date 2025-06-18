@@ -116,7 +116,14 @@ class _exmplev3pageState extends State<Examplev3Page> {
               const SizedBox(height: 10),
               Expanded(
                 child: historyList.isEmpty
-                    ? CircularProgressIndicator()
+                    ? Center(
+                        child: CircularProgressIndicator(
+                          strokeWidth: 5,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.grey.shade700),
+                          backgroundColor: Colors.grey.shade300,
+                        ),
+                      )
                     : ListView.builder(
                         itemCount: historyList.length,
                         itemBuilder: (context, index) {

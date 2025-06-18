@@ -29,5 +29,5 @@ const SkyeBlueColor = Color.fromARGB(255, 131, 56, 236);
 const backgroundColor = Color.fromARGB(255, 201, 238, 232);
 const bdSwitch = Color.fromARGB(255, 49, 48, 74);
 
-const sensorscreenColor = Color.fromARGB(255, 242, 233, 211);
+const sensorscreenColor = Color.fromARGB(255, 128, 238, 152);
 const sensorGrid = Color.fromARGB(255, 238, 227, 198);

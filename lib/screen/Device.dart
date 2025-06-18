@@ -109,782 +109,217 @@ class _sensorscreenState extends State<sensorscreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GridView.count(
-        padding: const EdgeInsets.fromLTRB(30, 15, 30, 10),
-        crossAxisCount: 1,
-        mainAxisSpacing: 15,
-        crossAxisSpacing: 15,
-        childAspectRatio: 3,
-        children: <Widget>[
-          //Grid 1
-          GestureDetector(
-            child: Stack(
-              children: [
-                Container(
-                  padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
-                  decoration: BoxDecoration(
-                    color: Grey2Color.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: BinColor2.withOpacity(0.7),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(6),
-                          child: Image.asset(
-                            'assets/bin01.png',
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment
-                              .center, // จัดให้อยู่ตรงกลางในแนวตั้ง
-                          crossAxisAlignment: CrossAxisAlignment
-                              .center, // จัดให้อยู่ตรงกลางในแนวนอน
-                          children: [
-                            Text(
-                              AppLocalizations.of(context)!.clear_plas,
-                              textAlign:
-                                  TextAlign.center, // จัดข้อความให้อยู่ตรงกลาง
-                              style: const TextStyle(
-                                color: FontblackColor,
-                                fontSize: 16,
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                            Container(
-                              height: 30,
-                              width: 60,
-                              decoration: BoxDecoration(
-                                color: sensor1Value == 1
-                                    ? FullColor.withOpacity(0.8)
-                                    : EmptyColor.withOpacity(0.8),
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Align(
-                                alignment: Alignment
-                                    .center, // จัดข้อความให้อยู่ตรงกลาง
-
-                                child: Text(
-                                  sensor1Value == 1
-                                      ? AppLocalizations.of(context)!.full
-                                      : AppLocalizations.of(context)!.empty,
-                                  textAlign: TextAlign
-                                      .center, // จัดข้อความให้อยู่ตรงกลาง
-                                  style: const TextStyle(
-                                      color: FontColor,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 30),
-                    ],
-                  ),
-                ),
-                Positioned(
-                  top: 5, // ระยะห่างจากด้านบน
-                  right: 5, // ระยะห่างจากด้านขวา
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.info, // ไอคอน info
-                      color: BlackColor, // สีของไอคอน
-                    ),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return Dialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width *
-                                  0.6, // 🔥 กำหนดขนาดแน่นอนเพื่อแก้ปัญหา RenderIntrinsicWidth
-                              child: Padding(
-                                padding: const EdgeInsets.all(15),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Row(
-                                      children: <Widget>[
-                                        Text(
-                                          AppLocalizations.of(context)!
-                                              .clear_plas,
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                          ),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Container(
-                                          width: 40,
-                                          height: 22,
-                                          decoration: BoxDecoration(
-                                            color: sensor1Value == 1
-                                                ? FullColor
-                                                : EmptyColor,
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                          ),
-                                          child: Center(
-                                            child: FittedBox(
-                                              child: Text(
-                                                sensor1Value == 1
-                                                    ? AppLocalizations.of(
-                                                            context)!
-                                                        .full
-                                                    : AppLocalizations.of(
-                                                            context)!
-                                                        .empty,
-                                                style: const TextStyle(
-                                                  color: FontColor,
-                                                  fontSize:
-                                                      16, // 🔥 ลดขนาดตัวอักษรเพื่อไม่ให้เกิด overflow
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      AppLocalizations.of(context)!.descri_1,
-                                      style: const TextStyle(
-                                          fontSize: 16, color: FontColor),
-                                    ),
-                                    const SizedBox(height: 15),
-                                    GridView.builder(
-                                      shrinkWrap: true,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2,
-                                        mainAxisSpacing: 15,
-                                        crossAxisSpacing: 15,
-                                        childAspectRatio: 0.9,
-                                      ),
-                                      itemCount: imagePathsClear.length,
-                                      itemBuilder: (context, index) {
-                                        return ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: Image.asset(
-                                            imagePathsClear[index],
-                                            fit: BoxFit.cover,
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                    const SizedBox(height: 15),
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(),
-                                      child: Text(
-                                        AppLocalizations.of(context)!.close,
-                                        style: const TextStyle(
-                                            color: FontColor, fontSize: 15),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 0),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: sensorscreenColor.withOpacity(0.25),
           ),
-          //Grid 2
-          GestureDetector(
-            child: Stack(
-              children: [
-                Container(
-                  padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
-                  decoration: BoxDecoration(
-                    color: Grey2Color.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: BinColor4.withOpacity(0.7),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(6),
-                          child: Image.asset(
-                            'assets/bin01.png',
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment
-                              .center, // จัดให้อยู่ตรงกลางในแนวตั้ง
-                          crossAxisAlignment: CrossAxisAlignment
-                              .center, // จัดให้อยู่ตรงกลางในแนวนอน
-                          children: [
-                            Text(
-                              AppLocalizations.of(context)!.cloudy_plas,
-                              textAlign:
-                                  TextAlign.center, // จัดข้อความให้อยู่ตรงกลาง
-                              style: const TextStyle(
-                                color: FontblackColor,
-                                fontSize: 16,
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                            Container(
-                              height: 30,
-                              width: 60,
-                              decoration: BoxDecoration(
-                                color: sensor2Value == 1
-                                    ? FullColor.withOpacity(0.8)
-                                    : EmptyColor.withOpacity(0.8),
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Align(
-                                alignment: Alignment
-                                    .center, // จัดข้อความให้อยู่ตรงกลาง
-
-                                child: Text(
-                                  sensor2Value == 1
-                                      ? AppLocalizations.of(context)!.full
-                                      : AppLocalizations.of(context)!.empty,
-                                  textAlign: TextAlign
-                                      .center, // จัดข้อความให้อยู่ตรงกลาง
-                                  style: const TextStyle(
-                                      color: FontColor,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 30),
-                    ],
-                  ),
-                ),
-                Positioned(
-                  top: 5, // ระยะห่างจากด้านบน
-                  right: 5, // ระยะห่างจากด้านขวา
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.info, // ไอคอน info
-                      color: BlackColor, // สีของไอคอน
-                    ),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return Dialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.6,
-                              child: Padding(
-                                padding: const EdgeInsets.all(15),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Row(
-                                      children: <Widget>[
-                                        Text(
-                                          AppLocalizations.of(context)!
-                                              .cloudy_plas,
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                          ),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Container(
-                                          width: 40,
-                                          height: 22,
-                                          decoration: BoxDecoration(
-                                            color: sensor2Value == 1
-                                                ? FullColor
-                                                : EmptyColor,
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                          ),
-                                          child: Center(
-                                            child: FittedBox(
-                                              child: Text(
-                                                sensor2Value == 1
-                                                    ? AppLocalizations.of(
-                                                            context)!
-                                                        .full
-                                                    : AppLocalizations.of(
-                                                            context)!
-                                                        .empty,
-                                                style: const TextStyle(
-                                                  color: FontColor,
-                                                  fontSize:
-                                                      16, // 🔥 ลดขนาดตัวอักษรเพื่อไม่ให้เกิด overflow
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      AppLocalizations.of(context)!.descri_2,
-                                      style: const TextStyle(
-                                          fontSize: 16, color: FontColor),
-                                    ),
-                                    const SizedBox(height: 15),
-                                    GridView.builder(
-                                      shrinkWrap: true,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2,
-                                        mainAxisSpacing: 15,
-                                        crossAxisSpacing: 15,
-                                        childAspectRatio: 0.9,
-                                      ),
-                                      itemCount: imagePathsCloudy.length,
-                                      itemBuilder: (context, index) {
-                                        return ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: Image.asset(
-                                            imagePathsCloudy[index],
-                                            fit: BoxFit.cover,
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                    const SizedBox(height: 15),
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(),
-                                      child: Text(
-                                        AppLocalizations.of(context)!.close,
-                                        style: const TextStyle(
-                                            color: FontColor, fontSize: 15),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
+          child: ListView(
+            physics: const NeverScrollableScrollPhysics(), // ไม่ scroll
+            padding: const EdgeInsets.only(left: 15, right: 10),
+            children: [
+              _buildSensorCard(context, sensor1Value, 'clear_plas', BinColor2,
+                  imagePathsClear),
+              const Divider(
+                thickness: 2,
+                height: 20,
+                color: whiteColor,
+              ),
+              _buildSensorCard(context, sensor2Value, 'cloudy_plas', BinColor4,
+                  imagePathsCloudy),
+              const Divider(
+                thickness: 2,
+                height: 20,
+                color: whiteColor,
+              ),
+              _buildSensorCard(context, sensor3Value, 'color_plas', BinColor1,
+                  imagePathsColor),
+              const Divider(
+                thickness: 2,
+                height: 20,
+                color: whiteColor,
+              ),
+              _buildSensorCard(
+                  context, sensor4Value, 'other', BinColor3, imagePathsOther),
+              // const SizedBox(height: 10),
+            ],
           ),
-          //Grid 3
-          GestureDetector(
-            child: Stack(
-              children: [
-                Container(
-                  padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
-                  decoration: BoxDecoration(
-                    color: Grey2Color.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: BinColor1.withOpacity(0.7),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(6),
-                          child: Image.asset(
-                            'assets/bin01.png',
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment
-                              .center, // จัดให้อยู่ตรงกลางในแนวตั้ง
-                          crossAxisAlignment: CrossAxisAlignment
-                              .center, // จัดให้อยู่ตรงกลางในแนวนอน
-                          children: [
-                            Text(
-                              AppLocalizations.of(context)!.color_plas,
-                              textAlign:
-                                  TextAlign.center, // จัดข้อความให้อยู่ตรงกลาง
-                              style: const TextStyle(
-                                color: FontblackColor,
-                                fontSize: 16,
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                            Container(
-                              height: 30,
-                              width: 60,
-                              decoration: BoxDecoration(
-                                color: sensor3Value == 1
-                                    ? FullColor.withOpacity(0.8)
-                                    : EmptyColor.withOpacity(0.8),
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Align(
-                                alignment: Alignment
-                                    .center, // จัดข้อความให้อยู่ตรงกลาง
-
-                                child: Text(
-                                  sensor3Value == 1
-                                      ? AppLocalizations.of(context)!.full
-                                      : AppLocalizations.of(context)!.empty,
-                                  textAlign: TextAlign
-                                      .center, // จัดข้อความให้อยู่ตรงกลาง
-                                  style: const TextStyle(
-                                      color: FontColor,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 30),
-                    ],
-                  ),
-                ),
-                Positioned(
-                  top: 5, // ระยะห่างจากด้านบน
-                  right: 5, // ระยะห่างจากด้านขวา
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.info, // ไอคอน info
-                      color: BlackColor, // สีของไอคอน
-                    ),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return Dialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width *
-                                  0.6, // 🔥 กำหนดขนาดแน่นอนเพื่อแก้ปัญหา RenderIntrinsicWidth
-                              child: Padding(
-                                padding: const EdgeInsets.all(15),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Row(
-                                      children: <Widget>[
-                                        Text(
-                                          AppLocalizations.of(context)!
-                                              .color_plas,
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                          ),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Container(
-                                          width: 40,
-                                          height: 22,
-                                          decoration: BoxDecoration(
-                                            color: sensor3Value == 1
-                                                ? FullColor
-                                                : EmptyColor,
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                          ),
-                                          child: Center(
-                                            child: FittedBox(
-                                              child: Text(
-                                                sensor3Value == 1
-                                                    ? AppLocalizations.of(
-                                                            context)!
-                                                        .full
-                                                    : AppLocalizations.of(
-                                                            context)!
-                                                        .empty,
-                                                style: const TextStyle(
-                                                  color: FontColor,
-                                                  fontSize: 16,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      AppLocalizations.of(context)!.descri_3,
-                                      style: const TextStyle(
-                                          fontSize: 16, color: FontColor),
-                                    ),
-                                    const SizedBox(height: 15),
-                                    GridView.builder(
-                                      shrinkWrap: true,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2,
-                                        mainAxisSpacing: 15,
-                                        crossAxisSpacing: 15,
-                                        childAspectRatio: 0.9,
-                                      ),
-                                      itemCount: imagePathsColor.length,
-                                      itemBuilder: (context, index) {
-                                        return ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: Image.asset(
-                                            imagePathsColor[index],
-                                            fit: BoxFit.cover,
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                    const SizedBox(height: 15),
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(),
-                                      child: Text(
-                                        AppLocalizations.of(context)!.close,
-                                        style: const TextStyle(
-                                            color: FontColor, fontSize: 15),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-          // Grid 4
-          GestureDetector(
-            child: Stack(
-              children: [
-                Container(
-                  padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
-                  decoration: BoxDecoration(
-                    color: Grey2Color.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: BinColor3.withOpacity(0.7),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(6),
-                          child: Image.asset(
-                            'assets/bin01.png',
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment
-                              .center, // จัดให้อยู่ตรงกลางในแนวตั้ง
-                          crossAxisAlignment: CrossAxisAlignment
-                              .center, // จัดให้อยู่ตรงกลางในแนวนอน
-                          children: [
-                            Text(
-                              AppLocalizations.of(context)!.other,
-                              textAlign:
-                                  TextAlign.center, // จัดข้อความให้อยู่ตรงกลาง
-                              style: const TextStyle(
-                                color: FontblackColor,
-                                fontSize: 16,
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                            Container(
-                              height: 30,
-                              width: 60,
-                              decoration: BoxDecoration(
-                                color: sensor4Value == 1
-                                    ? FullColor.withOpacity(0.8)
-                                    : EmptyColor.withOpacity(0.8),
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Align(
-                                alignment: Alignment
-                                    .center, // จัดข้อความให้อยู่ตรงกลาง
-
-                                child: Text(
-                                  sensor4Value == 1
-                                      ? AppLocalizations.of(context)!.full
-                                      : AppLocalizations.of(context)!.empty,
-                                  textAlign: TextAlign
-                                      .center, // จัดข้อความให้อยู่ตรงกลาง
-                                  style: const TextStyle(
-                                      color: FontColor,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 30),
-                    ],
-                  ),
-                ),
-                Positioned(
-                  top: 5, // ระยะห่างจากด้านบน
-                  right: 5, // ระยะห่างจากด้านขวา
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.info, // ไอคอน info
-                      color: BlackColor, // สีของไอคอน
-                    ),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return Dialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width *
-                                  0.6, // 🔥 กำหนดขนาดแน่นอนเพื่อแก้ปัญหา RenderIntrinsicWidth
-                              child: Padding(
-                                padding: const EdgeInsets.all(15),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Row(
-                                      children: <Widget>[
-                                        Text(
-                                          AppLocalizations.of(context)!.other,
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                          ),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Container(
-                                          width: 40,
-                                          height: 22,
-                                          decoration: BoxDecoration(
-                                            color: sensor4Value == 1
-                                                ? FullColor
-                                                : EmptyColor,
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                          ),
-                                          child: Center(
-                                            child: FittedBox(
-                                              child: Text(
-                                                sensor4Value == 1
-                                                    ? AppLocalizations.of(
-                                                            context)!
-                                                        .full
-                                                    : AppLocalizations.of(
-                                                            context)!
-                                                        .empty,
-                                                style: const TextStyle(
-                                                  color: FontColor,
-                                                  fontSize:
-                                                      16, // 🔥 ลดขนาดตัวอักษรเพื่อไม่ให้เกิด overflow
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      AppLocalizations.of(context)!.descri_4,
-                                      style: const TextStyle(
-                                          fontSize: 16, color: FontColor),
-                                    ),
-                                    const SizedBox(height: 15),
-                                    GridView.builder(
-                                      shrinkWrap: true,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2,
-                                        mainAxisSpacing: 15,
-                                        crossAxisSpacing: 15,
-                                        childAspectRatio: 0.9,
-                                      ),
-                                      itemCount: imagePathsOther.length,
-                                      itemBuilder: (context, index) {
-                                        return ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: Image.asset(
-                                            imagePathsOther[index],
-                                            fit: BoxFit.cover,
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                    const SizedBox(height: 15),
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(),
-                                      child: Text(
-                                        AppLocalizations.of(context)!.close,
-                                        style: const TextStyle(
-                                            color: FontColor, fontSize: 15),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
+}
+
+Widget _buildSensorCard(
+  BuildContext context,
+  int? value,
+  String titleKey,
+  Color binColor,
+  List<String> images,
+) {
+  final String title = {
+        'clear_plas': AppLocalizations.of(context)!.clear_plas,
+        'cloudy_plas': AppLocalizations.of(context)!.cloudy_plas,
+        'color_plas': AppLocalizations.of(context)!.color_plas,
+        'other': AppLocalizations.of(context)!.other,
+      }[titleKey] ??
+      'Unknown';
+
+  final String description = {
+        'clear_plas': AppLocalizations.of(context)!.descri_1,
+        'cloudy_plas': AppLocalizations.of(context)!.descri_2,
+        'color_plas': AppLocalizations.of(context)!.descri_3,
+        'other': AppLocalizations.of(context)!.descri_4,
+      }[titleKey] ??
+      '';
+
+  return Stack(
+    children: [
+      Container(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Row(
+          children: [
+            Container(
+              width: 85,
+              height: 85,
+              decoration: BoxDecoration(
+                color: binColor.withOpacity(0.7),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(15),
+                child: Image.asset('assets/Bin_sensor.png'),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: FontblackColor,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Container(
+                    height: 30,
+                    width: 60,
+                    decoration: BoxDecoration(
+                      color: value == 1
+                          ? FullColor.withOpacity(0.8)
+                          : EmptyColor.withOpacity(0.8),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Center(
+                      child: Text(
+                        value == 1
+                            ? AppLocalizations.of(context)!.full
+                            : AppLocalizations.of(context)!.empty,
+                        style: const TextStyle(
+                          color: FontColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.info, color: BlackColor),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return Dialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Row(
+                              children: [
+                                Text(title,
+                                    style: const TextStyle(fontSize: 20)),
+                                const SizedBox(width: 10),
+                                Container(
+                                  width: 40,
+                                  height: 22,
+                                  decoration: BoxDecoration(
+                                    color: value == 1 ? FullColor : EmptyColor,
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: Center(
+                                    child: FittedBox(
+                                      child: Text(
+                                        value == 1
+                                            ? AppLocalizations.of(context)!.full
+                                            : AppLocalizations.of(context)!
+                                                .empty,
+                                        style: const TextStyle(
+                                            color: FontColor, fontSize: 14),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Text(description,
+                                style: const TextStyle(
+                                    fontSize: 16, color: FontColor)),
+                            const SizedBox(height: 15),
+                            GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 10,
+                                crossAxisSpacing: 10,
+                                childAspectRatio: 1,
+                              ),
+                              itemCount: images.length,
+                              itemBuilder: (context, index) {
+                                return ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.asset(images[index],
+                                      fit: BoxFit.cover),
+                                );
+                              },
+                            ),
+                            const SizedBox(height: 10),
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: Text(
+                                AppLocalizations.of(context)!.close,
+                                style: const TextStyle(
+                                    color: FontColor, fontSize: 15),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
 }
 
 class historyscreen extends StatefulWidget {
@@ -967,66 +402,83 @@ class _historyscreenState extends State<historyscreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(5),
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      child: Column(
-        children: <Widget>[
-          const SizedBox(height: 10),
-          Expanded(
-            child: historyList.isEmpty
-                ? Center(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 5,
-                      valueColor:
-                          AlwaysStoppedAnimation<Color>(Colors.grey.shade700),
-                      backgroundColor: Colors.grey.shade300,
-                    ),
-                  )
-                : ListView.builder(
-                    itemCount: historyList.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        color: Grey2Color.withOpacity(1),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: sensorscreenColor.withOpacity(0.25),
+        ),
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: historyList.isEmpty
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 5,
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(Colors.grey.shade700),
+                        backgroundColor: Colors.grey.shade300,
+                      ),
+                    )
+                  : ListView.separated(
+                      itemCount: historyList.length,
+                      separatorBuilder: (context, index) => const Divider(
+                        color: Colors.white,
+                        thickness: 1.2,
+                        height: 10,
+                      ),
+                      itemBuilder: (context, index) {
+                        final item = historyList[index];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Image.memory(
-                                base64Decode(historyList[index]['imageBase64']),
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.memory(
+                                  base64Decode(item['imageBase64']),
+                                  width: 80,
+                                  height: 80,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                              const SizedBox(width: 10),
+                              const SizedBox(width: 12),
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      '${AppLocalizations.of(context)!.typr}: ${historyList[index]['type']}',
+                                      '${AppLocalizations.of(context)!.typr}: ${item['type']}',
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16,
                                       ),
                                     ),
                                     Text(
-                                        '${AppLocalizations.of(context)!.bin_num}: ${historyList[index]['numbin']}'),
+                                      '${AppLocalizations.of(context)!.bin_num}: ${item['numbin']}',
+                                      style: const TextStyle(fontSize: 14),
+                                    ),
                                     Text(
-                                      '${AppLocalizations.of(context)!.classi_at}: ${_formatDateTime(historyList[index]['create_at'])}',
+                                      '${AppLocalizations.of(context)!.classi_at}: ${_formatDateTime(item['create_at'])}',
+                                      style: const TextStyle(
+                                          fontSize: 13, color: Colors.black54),
                                     ),
                                   ],
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                      );
-                    },
-                  ),
-          ),
-        ],
+                        );
+                      },
+                    ),
+            ),
+          ],
+        ),
       ),
     );
   }

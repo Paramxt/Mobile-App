@@ -149,6 +149,8 @@ class _HaveDeviceScreenState extends State<HaveDeviceScreen> {
   bool isPoweredOn = true;
   String? _errorMessage;
   int? _selectedTabIndex = 0;
+  bool sshConnected = true;
+  bool _isProcessing = false;
 
   @override
   void initState() {
@@ -166,6 +168,7 @@ class _HaveDeviceScreenState extends State<HaveDeviceScreen> {
     setState(() {
       _isLoading = true; // Show loading indicator
     });
+    getstatusraspi();
     String baseUrl;
     if (kIsWeb) {
       // Running on the web (Chrome, Safari, etc.)
@@ -217,32 +220,96 @@ class _HaveDeviceScreenState extends State<HaveDeviceScreen> {
   }
 
   Future<void> _sendRequest(String url) async {
+    final stopwatch = Stopwatch()..start(); // ⏱ เริ่มจับเวลา
+
     try {
       final response = await http.get(Uri.parse(url));
+      stopwatch.stop(); // 🛑 หยุดจับเวลา
+
       if (response.statusCode == 200) {
-        print('Success: ${response.body}');
+        print('✅ Success: ${response.body}');
+        print('⏱ Response time: ${stopwatch.elapsedMilliseconds} ms');
       } else {
-        print('Failed to connect to the server');
+        print('❌ Failed to connect to the server');
+        print('⏱ Response time: ${stopwatch.elapsedMilliseconds} ms');
       }
     } catch (e) {
-      print('Error: $e');
+      stopwatch.stop();
+      print('❌ Error: $e');
+      print('⏱ Response time: ${stopwatch.elapsedMilliseconds} ms');
     }
   }
 
   Future<void> getstatusraspi() async {
     String baseUrl = getBaseUrl();
     final url = Uri.parse('$baseUrl/status');
+    final stopwatch_getstatus = Stopwatch()..start();
 
     try {
       final response = await http.get(url);
+      stopwatch_getstatus.stop();
+
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
+        final status = json['status'];
+
+        if (status == 'running') {
+          setState(() {
+            sshConnected = true;
+            isPoweredOn = true;
+          });
+          print(
+              '⏱ Response time running : ${stopwatch_getstatus.elapsedMilliseconds} ms');
+        } else if (status == 'stopped') {
+          setState(() {
+            sshConnected = true;
+            isPoweredOn = false;
+          });
+          print(
+              '⏱ Response time stopped: ${stopwatch_getstatus.elapsedMilliseconds} ms');
+        } else {
+          setState(() {
+            sshConnected = false;
+            isPoweredOn = false;
+          });
+        }
+      } else {
         setState(() {
-          isPoweredOn = (json['status'] == 'running');
+          sshConnected = false;
+          isPoweredOn = false;
+        });
+        print(
+            '⏱ Response time DisConnect : ${stopwatch_getstatus.elapsedMilliseconds} ms');
+        Future.microtask(() {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('เชื่อมต่อไม่สำเร็จ'),
+              content: const Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('- ไม่สามารถเชื่อมต่อต้นแบบเครื่องคัดแยกได้'),
+                  Text('- กรุณาตรวจสอบว่าต้นแบบเครื่องคัดแยกนั้นเปิดอยู่')
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Center(
+                    child: Text('ตกลง'),
+                  ),
+                ),
+              ],
+            ),
+          );
         });
       }
     } catch (error) {
-      print('Error fetching status data: $error');
+      print('❌ Error: $error');
+      setState(() {
+        sshConnected = false;
+        isPoweredOn = false;
+      });
     }
   }
 
@@ -314,7 +381,6 @@ class _HaveDeviceScreenState extends State<HaveDeviceScreen> {
               );
             },
           ),
-          const SizedBox(width: 10),
         ],
       ),
       backgroundColor: PrimaryColor.withOpacity(0.9),
@@ -337,55 +403,94 @@ class _HaveDeviceScreenState extends State<HaveDeviceScreen> {
                         ),
                       ),
                       const Spacer(),
-                      FlutterSwitch(
-                        width: 80.0, // ความกว้างของปุ่ม
-                        height: 40.0, // ความสูงของปุ่ม
-                        toggleSize: 25.0, // ขนาดของปุ่ม Toggle
-                        value: isPoweredOn, // สถานะของปุ่ม (on/off)
-                        borderRadius: 20.0, // ความโค้งมนของปุ่ม
-                        padding: 5.0, // ระยะห่างภายในปุ่ม
-                        activeColor: bdSwitch, // สีพื้นหลังเมื่อเปิด
-                        inactiveColor: bdSwitch, // สีพื้นหลังเมื่อปิด
-                        activeText: "ON", // ข้อความเมื่อเปิด
-                        inactiveText: "OFF", // ข้อความเมื่อปิด
-                        activeTextColor: Colors.white, // สีข้อความเมื่อเปิด
-                        inactiveTextColor: Colors.white, // สีข้อความเมื่อปิด
-                        activeIcon: const Icon(
-                          Icons.power_settings_new_sharp,
-                          color: Colors.green,
-                        ),
-                        inactiveIcon: const Icon(
-                          Icons.power_settings_new_sharp,
-                          color: Colors.red,
-                        ),
-                        showOnOff: true, // แสดงข้อความ ON/OFF
-                        onToggle: (bool value) async {
-                          String baseUrl;
-                          if (kIsWeb) {
-                            baseUrl = dotenv.env['BASE_URL_WEB'] ?? '';
-                          } else if (Platform.isAndroid) {
-                            baseUrl = dotenv.env['BASE_URL_ANDROID'] ?? '';
-                          } else {
-                            baseUrl = dotenv.env['BASE_URL_OTHER'] ?? '';
-                          }
-
-                          final url =
-                              Uri.parse('$baseUrl/${value ? 'start' : 'stop'}');
-
-                          try {
-                            final response = await http.get(url);
-                            if (response.statusCode == 200) {
-                              setState(() {
-                                isPoweredOn = value;
-                              });
-                            } else {
-                              print(
-                                  '❌ Failed to toggle power. Status code: ${response.statusCode}');
-                            }
-                          } catch (e) {
-                            print('❌ Error toggling power: $e');
+                      // _isProcessing
+                      // ? SizedBox(
+                      //     width: 40,
+                      //     height: 40,
+                      //     child: CircularProgressIndicator(
+                      //       strokeWidth: 5,
+                      //       valueColor: AlwaysStoppedAnimation<Color>(
+                      //           Colors.grey.shade700),
+                      //       backgroundColor: Colors.grey.shade300,
+                      //     ),
+                      //   )
+                      GestureDetector(
+                        onTap: () {
+                          if (!sshConnected) {
+                            print('SSH not connected, refreshing status...');
+                            setState(
+                                () => _isProcessing = true); // แสดงโหลดทันที
+                            getstatusraspi().whenComplete(() {
+                              setState(() => _isProcessing = false);
+                            });
                           }
                         },
+                        child: AbsorbPointer(
+                          absorbing: !sshConnected || _isProcessing,
+                          child: FlutterSwitch(
+                            width: 80.0,
+                            height: 40.0,
+                            toggleSize: 25.0,
+                            value: isPoweredOn,
+                            borderRadius: 20.0,
+                            padding: 5.0,
+                            activeColor: bdSwitch,
+                            inactiveColor: bdSwitch,
+                            activeText: "ON",
+                            inactiveText: "OFF",
+                            activeTextColor: Colors.white,
+                            inactiveTextColor: Colors.white,
+                            activeIcon: const Icon(
+                              Icons.power_settings_new_sharp,
+                              color: Colors.green,
+                            ),
+                            inactiveIcon: const Icon(
+                              Icons.power_settings_new_sharp,
+                              color: Colors.red,
+                            ),
+                            showOnOff: true,
+                            onToggle: (bool value) async {
+                              String baseUrl;
+                              if (kIsWeb) {
+                                baseUrl = dotenv.env['BASE_URL_WEB'] ?? '';
+                              } else if (Platform.isAndroid) {
+                                baseUrl = dotenv.env['BASE_URL_ANDROID'] ?? '';
+                              } else {
+                                baseUrl = dotenv.env['BASE_URL_OTHER'] ?? '';
+                              }
+
+                              final url = Uri.parse(
+                                  '$baseUrl/${value ? 'start' : 'stop'}');
+                              final stopwatch = Stopwatch()..start();
+
+                              setState(() => _isProcessing = true);
+                              try {
+                                final response = await http.get(url);
+                                stopwatch.stop(); // 🛑 หยุดจับเวลา
+
+                                print(
+                                    '⏱ Response time ${value}: ${stopwatch.elapsedMilliseconds} ms');
+
+                                if (response.statusCode == 200) {
+                                  print("response: ${response.body}");
+                                  setState(() {
+                                    isPoweredOn = value;
+                                  });
+                                } else {
+                                  print(
+                                      '❌ Failed to toggle power. Status code: ${response.statusCode}');
+                                }
+                              } catch (e) {
+                                stopwatch.stop();
+                                print('❌ Error toggling power: $e');
+                                print(
+                                    '⏱ Response time: ${stopwatch.elapsedMilliseconds} ms');
+                              } finally {
+                                setState(() => _isProcessing = false);
+                              }
+                            },
+                          ),
+                        ),
                       ),
                       const SizedBox(width: 10),
                     ],

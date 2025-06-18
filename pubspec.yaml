@@ -76,8 +76,8 @@ dev_dependencies:
 
 flutter_launcher:
   #  image_path: "assets/images/icon-128x128.png"
-  image_path_android: "assets/icon/IconApp.png"
-  image_path_ios: "assets/icon/IconApp.png"
+  image_path_android: "assets/icon/icon.png"
+  image_path_ios: "assets/icon/icon.png"
   android: true # can specify file name here e.g. "ic_launcher"
   ios: true # can specify file name here e.g. "My-Launcher-Icon"
   # adaptive_icon_background: "assets/images/christmas-background.png" # only available for Android 8.0 devices and above
@@ -89,7 +89,6 @@ flutter_launcher:
 #   ios: true
 #   image_path: "assets/icon/IconApp.png"
 #   min_sdk_android: 3.3.0
-
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -120,7 +119,7 @@ flutter:
     - assets/Color.JPG
     - assets/en.jpg
     - assets/th.jpg
-    - assets/icon/IconApp.png
+    - assets/icon/icon.png
     - assets/bottle/clear01.png
     - assets/bottle/clear02.png
     - assets/bottle/clear03.png
@@ -141,6 +140,13 @@ flutter:
     - assets/BGLogo.png
     - assets/BGLogo02.png
     - assets/BGLogoCenter.png
+    - assets/Bin_sensor.png
+
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/icon.png"
 
   # To add assets to your application, add an assets section, like this:
   # assets:

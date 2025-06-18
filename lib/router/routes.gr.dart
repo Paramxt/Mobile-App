@@ -10,7 +10,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i8;
 import 'package:flutter_summer/screen/Adddevice.dart' as _i1;
-import 'package:flutter_summer/screen/example.dart' as _i2;
+import 'package:flutter_summer/screen/reset_password.dart' as _i2;
 import 'package:flutter_summer/screen/example_v3.dart' as _i3;
 import 'package:flutter_summer/screen/setting.dart' as _i6;
 import 'package:flutter_summer/screen/v2_HomeDevice.dart' as _i4;
@@ -31,7 +31,7 @@ abstract class $AppRouter extends _i8.RootStackRouter {
     ExampleRoute.name: (routeData) {
       return _i8.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i2.ExamplePage(),
+        child: _i2.ResetPasswordPage(),
       );
     },
     Examplev3Route.name: (routeData) {
@@ -82,7 +82,7 @@ class AdddeviceRoute extends _i8.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i2.ExamplePage]
+/// [_i2.ResetPasswordPage]
 class ExampleRoute extends _i8.PageRouteInfo<void> {
   const ExampleRoute({List<_i8.PageRouteInfo>? children})
       : super(
